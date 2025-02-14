@@ -26,7 +26,16 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${geistSans.variable} ${geistMono.variable}`}>
-        {children}
+        <ConfigProvider
+          theme={{
+            token: {
+              colorPrimary: '#009540',
+              controlOutline: 'none',
+            },
+          }}
+        >
+          {children}
+        </ConfigProvider>
       </body>
     </html>
   );
