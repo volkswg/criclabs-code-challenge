@@ -1,20 +1,8 @@
-/* eslint-disable no-var */
 import { PrismaClient } from '@prisma/client';
 
-declare global {
-  // Extend the global object with a custom 'prisma' property
-  var prisma: PrismaClient | undefined;
-}
+const globalForPrisma = global as unknown as { prisma?: PrismaClient };
 
-// Use a single shared instance of PrismaClient
-const prisma =
-  global.prisma ||
-  new PrismaClient({
-    log: process.env.NODE_ENV === 'development' ? ['query', 'info', 'warn', 'error'] : [],
-  });
+export const prisma = globalForPrisma.prisma ?? new PrismaClient();
 
-if (process.env.NODE_ENV !== 'production') {
-  global.prisma = prisma; // Attach Prisma instance to the global object in non-production environments
-}
-
-export default prisma;
+// In development, Next.js hot-reloads, which may cause multiple instances of PrismaClient, leading to database connection issues.
+if (process.env.NODE_ENV !== 'production') globalForPrisma.prisma = prisma;
