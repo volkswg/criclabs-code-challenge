@@ -28,9 +28,18 @@ export default function RootLayout({
       <body className={`${geistSans.variable} ${geistMono.variable}`}>
         <ConfigProvider
           theme={{
+            components: {
+              Button: {
+                fontWeight: 500,
+                lineHeight: 22,
+                fontSize: 14,
+              },
+            },
             token: {
               colorPrimary: '#009540',
               controlOutline: 'none',
+              colorErrorBg: '#F5222D14',
+              colorErrorBorder: '#F5222D29',
             },
           }}
         >
