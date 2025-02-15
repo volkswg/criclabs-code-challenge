@@ -1,12 +1,12 @@
 import React, { ReactNode } from "react";
-import style from "./layout-with-footer.module.css";
+import style from "./custom-layout.module.css";
 
 interface LayoutProps {
   children: ReactNode;
   footerAlignment?: "center" | "left" | "right";
 }
 
-const LayoutWithFooter = ({
+const CustomLayout = ({
   children,
   footerAlignment = "center",
 }: LayoutProps) => {
@@ -25,4 +25,4 @@ const LayoutWithFooter = ({
   );
 };
 
-export default LayoutWithFooter;
+export default CustomLayout;

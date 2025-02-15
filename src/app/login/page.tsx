@@ -3,7 +3,7 @@ import style from './login-page.module.css';
 import Image from 'next/image';
 import { Metadata } from 'next';
 import LoginForm from './login-form/login-form';
-import LayoutWithFooter from '@/components/layout/layout-with-footer';
+import CustomLayout from '@/components/layout/custom-layout';
 
 export const metadata: Metadata = {
   title: 'Criclabs - Login',
@@ -11,7 +11,7 @@ export const metadata: Metadata = {
 
 const LoginPage = () => {
   return (
-    <LayoutWithFooter footerAlignment="center">
+    <CustomLayout footerAlignment="center">
       <div className={style.PageContainer}>
         <div className={style.LoginPanel}>
           <div className={style.Logo}>
@@ -26,7 +26,7 @@ const LoginPage = () => {
           <LoginForm />
         </div>
       </div>
-    </LayoutWithFooter>
+    </CustomLayout>
   );
 };
 
