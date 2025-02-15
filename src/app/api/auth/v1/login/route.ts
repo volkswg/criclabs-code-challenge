@@ -1,3 +1,4 @@
+import { UnauthorizedError } from '@/exceptions/unauthorized-error';
 import { ProcessedParams } from '@/middlewares/request.middleware';
 import { withMiddleware } from '@/middlewares/router.middleware';
 import { signAccessToken } from '@/services/auth-token.service';
@@ -14,13 +15,13 @@ const loginHandler = async (params: ProcessedParams) => {
   const { email, password } = params.body as LoginBody;
   const user = await findUserByEmail(email);
   if (!user) {
-    throw 'User Not Found';
+    throw new UnauthorizedError('Invalid email or password');
   }
   const isPasswordMatch = await checkPassword(password, user.password);
   if (!isPasswordMatch) {
-    throw 'Invalid email or password';
+    throw new UnauthorizedError('Invalid email or password');
   }
-  // generate jwt token 
+  // generate jwt token
   const accessToken = signAccessToken({ email: user.email });
 
   // const result = await createUsers({
