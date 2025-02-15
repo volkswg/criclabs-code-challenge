@@ -16,7 +16,7 @@ const LoginPage = () => {
         <div className={style.LoginPanel}>
           <div className={style.Logo}>
             <Image
-              src="/logo/criclabs-challenge-logo.svg"
+              src="/static/logo/criclabs-challenge-logo.svg"
               alt="criclabs challenge logo"
               width={40}
               height={40}
