@@ -1,19 +1,37 @@
 'use client';
-import { Button, Form, Input, Alert } from 'antd';
 import React, { useState } from 'react';
+import { useRouter } from 'next/navigation';
+import axios, { AxiosError } from 'axios';
+import { Button, Form, Input, Alert } from 'antd';
 
 type FieldType = {
   email: string;
   password: string;
 };
 
+type ErrorResponseType = {
+  message: string;
+};
+
 const LoginForm = () => {
+  const router = useRouter();
   const [form] = Form.useForm<FieldType>();
   const [errorMessage, setErrorMessage] = useState<string>('');
 
-  const onFinishHandler = (values: FieldType) => {
-    console.log(values);
+  const onFinishHandler = async (values: FieldType) => {
     setErrorMessage('');
+    try {
+      await axios.post('/api/auth/v1/login', values);
+      router.push('/');
+    } catch (err) {
+      if (err instanceof AxiosError) {
+        if (err.response) {
+          const resPayload = err.response.data as ErrorResponseType;
+          const errorMsg = resPayload.message;
+          setErrorMessage(errorMsg);
+        }
+      }
+    }
   };
 
   return (
