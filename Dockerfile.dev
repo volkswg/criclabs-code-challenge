@@ -1,0 +1,17 @@
+# Use an official Node.js image
+FROM node:18
+
+# Set working directory inside the container
+WORKDIR /app
+
+# Copy package manager lock files for better caching
+COPY package.json yarn.lock ./
+
+# Copy the entire project (except files ignored by .dockerignore)
+COPY . .
+
+# Generate Prisma client with the correct binary
+RUN npx prisma generate
+
+# Expose Next.js development server port
+EXPOSE 3000
