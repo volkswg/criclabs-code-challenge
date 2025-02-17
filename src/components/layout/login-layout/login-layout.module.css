@@ -1,0 +1,12 @@
+.LayoutContainer {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  padding: 0 var(--viewportPaddingH);
+}
+
+@media screen and (max-width: 576px) {
+  .LayoutContainer {
+    padding: 0 var(--xsViewportPaddingH);
+  }
+}

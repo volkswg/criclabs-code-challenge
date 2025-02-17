@@ -1,0 +1,35 @@
+.LabelStyle {
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 20px;
+  color: #00000073;
+}
+
+.CheckboxLabelStyle {
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 22px;
+}
+
+.SearchInput {
+  border-color: #0f172a0f;
+  padding: 8px var(--viewportPaddingH);
+  border-radius: 0;
+  outline: none;
+}
+
+.SearchInput:hover,
+.SearchInput:focus,
+.SearchInput:focus-within {
+  border-color: #0f172a0f;
+}
+
+.ContentContainer {
+  padding: 16px var(--viewportPaddingH);
+}
+
+@media screen and (max-width: 576px) {
+  .ContentContainer {
+    padding: 16px var(--xsViewportPaddingH);
+  }
+}

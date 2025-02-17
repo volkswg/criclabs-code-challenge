@@ -1,0 +1,41 @@
+.DrawerContainer {
+  border-radius: 0;
+  .ContentContainer {
+    padding: 16px var(--viewportPaddingH);
+  }
+  .NoPadding {
+    padding: 0;
+  }
+}
+
+.DrawerContainer :global(.ant-drawer-body) {
+  padding: 0;
+}
+
+.SearchInput {
+  border-color: #0f172a0f;
+  padding: 8px var(--viewportPaddingH);
+  border-radius: 0;
+  outline: none;
+}
+
+.SearchInput:hover,
+.SearchInput:focus,
+.SearchInput:focus-within {
+  border-color: #0f172a0f;
+}
+
+@media screen and (max-width: 576px) {
+  .DrawerContainer {
+    border-radius: 12px 12px 0 0;
+    .ContentContainer {
+      padding: 16px var(--xsViewportPaddingH);
+    }
+    .NoPadding {
+      padding: 0;
+    }
+  }
+  .SearchInput {
+    padding: 8px var(--xsViewportPaddingH);
+  }
+}

@@ -1,0 +1,17 @@
+.HeaderContainer {
+  background-color: white;
+}
+
+.HeaderContainer {
+  height: var(--navBarHeight);
+  display: flex;
+  padding: 12px var(--viewportPaddingH);
+  gap: 24px;
+}
+
+@media screen and (max-width: 576px) {
+  .HeaderContainer {
+    padding: 12px var(--xsViewportPaddingH);
+    gap: 12px;
+  }
+}

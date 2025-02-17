@@ -1,0 +1,22 @@
+.PageContainer {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  justify-content: center;
+  align-items: center;
+}
+
+.LoginPanel {
+  width: 340px;
+  background-color: white;
+  border: 1px solid #0000000f;
+  border-radius: 6px;
+  padding: 24px;
+}
+
+.PanelTitle {
+  font-weight: 600;
+  font-size: 24px;
+  line-height: 32px;
+  margin: 24px 0;
+}
