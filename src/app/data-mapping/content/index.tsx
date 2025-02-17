@@ -1,5 +1,5 @@
 'use client';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Button, Form, Menu, MenuProps } from 'antd';
 import FilterIcon from '../../../../public/static/filter-icon.svg';
 import ExportIcon from '../../../../public/static/export-icon.svg';
@@ -13,7 +13,10 @@ import DisplayDataTable from './display-data-table';
 import ResponsiveDrawer from '@/components/responsive-drawer';
 import style from './data-mapping.module.css';
 import NewDataForm from './new-data-form';
+import DataFilterForm from './data-filter-form';
+import { DataSubjectTypeType, DepartmentType } from '@/interfaces/data';
 
+import { DataMappingFilterType } from '@/interfaces/filter';
 
 const items: MenuProps['items'] = [
   {
@@ -33,16 +36,91 @@ const items: MenuProps['items'] = [
 
 const DataMappingContent = () => {
   const [newDataForm] = Form.useForm();
+  const [filterDataForm] = Form.useForm();
+
   const [openNewDataDrawer, setOpenNewDataDrawer] = useState<boolean>(false);
+  const [openFilterDrawer, setOpenFilterDrawer] = useState<boolean>(false);
+
+  // Department data
+  const [departmentDataList, setDepartmentDataList] = useState<
+    DepartmentType[]
+  >([]);
+
+  // Data Subject Type data
+  const [dataSubjectTypeDataList, setDataSubjectTypeDataList] = useState<
+    DataSubjectTypeType[]
+  >([]);
+
+  // Data Mapping Filter
+  const [dataMappingFilter, setDataMappingFilter] =
+    useState<DataMappingFilterType>({
+      searchText: undefined,
+      department: undefined,
+      dataSubjectType: undefined,
+    });
+
   const openNewDataDrawerHandler = () => setOpenNewDataDrawer(true);
   const closeNewDataDrawerHandler = () => setOpenNewDataDrawer(false);
+
+  const openFilterDrawerHandler = () => setOpenFilterDrawer(true);
+  const closeFilterDrawerHandler = (updateFilterForm: boolean = false) => {
+    setOpenFilterDrawer(false);
+    // set field to current filter data
+    if (updateFilterForm) {
+      filterDataForm.setFieldsValue(dataMappingFilter);
+    }
+  };
+
+  const fetchDepartmentsHandler = async () => {
+    setDepartmentDataList([
+      { id: 1, value: 'Human Resources' },
+      { id: 2, value: 'IT/IS' },
+      { id: 3, value: 'Admission' },
+      { id: 4, value: 'Marketing' },
+    ]);
+  };
+
+  const fetchDataSubjectTypeHandler = async () => {
+    setDataSubjectTypeDataList([
+      { id: 1, value: 'Employees' },
+      { id: 2, value: 'Faculty Staff' },
+      { id: 3, value: 'Students' },
+    ]);
+  };
+
+  // filter handler
+  const applyFilterHandler = async (filter: DataMappingFilterType) => {
+    setDataMappingFilter(filter);
+    closeFilterDrawerHandler();
+  };
+  const resetFilterHandler = async () => {
+    setDataMappingFilter({
+      searchText: undefined,
+      department: undefined,
+      dataSubjectType: undefined,
+    });
+    closeFilterDrawerHandler(true);
+    filterDataForm.resetFields();
+  };
+
+  useEffect(() => {
+    const fetchData = async () => {
+      await fetchDepartmentsHandler();
+      await fetchDataSubjectTypeHandler();
+    };
+    fetchData();
+  }, []);
+
   return (
     <>
       <div className={style.PageContainer}>
         <div className={style.TitleSection}>
           <span className={style.PageTitle}>Data Mapping</span>
           <div className={style.TitleButtons}>
-            <Button icon={<FilterIcon width={16} height={16} />}>
+            <Button
+              icon={<FilterIcon width={16} height={16} />}
+              onClick={openFilterDrawerHandler}
+            >
               <span className={style.HideBtnLabel}>Filter</span>
             </Button>
             <Button icon={<ExportIcon width={16} height={16} />}>
@@ -78,6 +156,7 @@ const DataMappingContent = () => {
           <DisplayDataTable />
         </div>
       </div>
+      {/* Drawer Section */}
       <ResponsiveDrawer
         open={openNewDataDrawer}
         onClose={closeNewDataDrawerHandler}
@@ -102,7 +181,52 @@ const DataMappingContent = () => {
           </div>
         }
       >
-        <NewDataForm form={newDataForm} />
+        <NewDataForm
+          form={newDataForm}
+          departmentDataList={departmentDataList}
+          dataSubjectTypeDataList={dataSubjectTypeDataList}
+        />
+      </ResponsiveDrawer>
+      <ResponsiveDrawer
+        open={openFilterDrawer}
+        onClose={closeFilterDrawerHandler}
+        title={
+          <div className={style.FilterDrawerTitle}>
+            <span
+              className={style.TextTitle}
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: 8,
+              }}
+            >
+              <FilterIcon /> Filter
+            </span>
+            <Button
+              type="text"
+              style={{ marginLeft: 'auto' }}
+              onClick={resetFilterHandler}
+            >
+              Reset
+            </Button>
+            <Button
+              type="primary"
+              onClick={() => {
+                filterDataForm.submit();
+              }}
+            >
+              Apply Filter
+            </Button>
+          </div>
+        }
+        noPadding
+      >
+        <DataFilterForm
+          form={filterDataForm}
+          departmentDataList={departmentDataList}
+          dataSubjectTypeDataList={dataSubjectTypeDataList}
+          onApplyFilter={applyFilterHandler}
+        />
       </ResponsiveDrawer>
     </>
   );
