@@ -8,3 +8,10 @@ export type DataSubjectTypeType = {
   value: string;
 };
 
+export type DataMappingType = {
+  id: number;
+  title: string;
+  description: string;
+  department: DepartmentType;
+  dataSubjectType: DataSubjectTypeType[];
+};

@@ -1,3 +1,8 @@
+
+.DataTable{
+  flex-grow: 1;
+  overflow-y: hidden;
+}
 .DataTable :global(.ant-table-thead .ant-table-cell) {
   padding: 0 24px 12px 0;
   white-space: nowrap;

@@ -1,6 +1,6 @@
 'use client';
 import React from 'react';
-// import axios, { AxiosError } from 'axios';
+import axios from 'axios';
 import { Form, FormInstance, Input, Select } from 'antd';
 import { DataSubjectTypeType, DepartmentType } from '@/interfaces/data';
 import style from './new-data-form.module.css';
@@ -9,6 +9,9 @@ interface NewDataFormProps {
   form: FormInstance;
   departmentDataList: DepartmentType[];
   dataSubjectTypeDataList: DataSubjectTypeType[];
+  setLoading?: (isLoading: boolean) => void;
+  onSuccess?: () => void;
+  onFail?: () => void;
 }
 
 type FieldType = {
@@ -26,9 +29,22 @@ const NewDataForm = ({
   form,
   departmentDataList = [],
   dataSubjectTypeDataList = [],
+  setLoading = () => {},
+  onSuccess = () => {},
+  onFail = () => {},
 }: NewDataFormProps) => {
   const onFinishHandler = async (values: FieldType) => {
-    console.log(values);
+    setLoading(true);
+    try {
+      await axios.post('/api/data/v1/data-mapping', values);
+      onSuccess();
+    } catch (err) {
+      onFail();
+      console.log(err);
+    } finally {
+      setLoading(false);
+    }
+
   };
   return (
     <Form

@@ -1,5 +1,8 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 'use client';
 import React, { useEffect, useState } from 'react';
+import axios from 'axios';
+import qs from 'query-string';
 import { Button, Form, Menu, MenuProps } from 'antd';
 import FilterIcon from '../../../../public/static/filter-icon.svg';
 import ExportIcon from '../../../../public/static/export-icon.svg';
@@ -14,8 +17,11 @@ import ResponsiveDrawer from '@/components/responsive-drawer';
 import style from './data-mapping.module.css';
 import NewDataForm from './new-data-form';
 import DataFilterForm from './data-filter-form';
-import { DataSubjectTypeType, DepartmentType } from '@/interfaces/data';
-
+import {
+  DataMappingType,
+  DataSubjectTypeType,
+  DepartmentType,
+} from '@/interfaces/data';
 import { DataMappingFilterType } from '@/interfaces/filter';
 
 const items: MenuProps['items'] = [
@@ -45,11 +51,15 @@ const DataMappingContent = () => {
   const [departmentDataList, setDepartmentDataList] = useState<
     DepartmentType[]
   >([]);
+  const [isLoadingDepartmentData, setIsLoadingDepartmentData] =
+    useState<boolean>(false);
 
   // Data Subject Type data
   const [dataSubjectTypeDataList, setDataSubjectTypeDataList] = useState<
     DataSubjectTypeType[]
   >([]);
+  const [isLoadingdataSubjectTypeData, setIsLoadingdataSubjectTypeData] =
+    useState<boolean>(false);
 
   // Data Mapping Filter
   const [dataMappingFilter, setDataMappingFilter] =
@@ -58,6 +68,19 @@ const DataMappingContent = () => {
       department: undefined,
       dataSubjectType: undefined,
     });
+
+  // Data Mapping data
+  const [dataMappingData, setDataMappingData] = useState<{
+    count: number;
+    page: number;
+    pageSize: number;
+    data: DataMappingType[];
+  }>({ count: 0, page: 1, pageSize: 1, data: [] });
+  const [isLoadingDataMapping, setIsLoadingDataMapping] =
+    useState<boolean>(false);
+
+  const [isSendingNewDataMapping, setIsSendingNewDataMapping] =
+    useState<boolean>(false);
 
   const openNewDataDrawerHandler = () => setOpenNewDataDrawer(true);
   const closeNewDataDrawerHandler = () => setOpenNewDataDrawer(false);
@@ -72,20 +95,41 @@ const DataMappingContent = () => {
   };
 
   const fetchDepartmentsHandler = async () => {
-    setDepartmentDataList([
-      { id: 1, value: 'Human Resources' },
-      { id: 2, value: 'IT/IS' },
-      { id: 3, value: 'Admission' },
-      { id: 4, value: 'Marketing' },
-    ]);
+    setIsLoadingDepartmentData(true);
+    const result = await axios.get('/api/data/v1/departments');
+    const departmentDataList = result.data.data as DepartmentType[];
+    setDepartmentDataList(departmentDataList);
+    setIsLoadingDepartmentData(false);
   };
 
   const fetchDataSubjectTypeHandler = async () => {
-    setDataSubjectTypeDataList([
-      { id: 1, value: 'Employees' },
-      { id: 2, value: 'Faculty Staff' },
-      { id: 3, value: 'Students' },
-    ]);
+    setIsLoadingdataSubjectTypeData(true);
+    const result = await axios.get('/api/data/v1/data-subject-types');
+    const dataSubjectTypeDataList = result.data.data as DataSubjectTypeType[];
+    setDataSubjectTypeDataList(dataSubjectTypeDataList);
+    setIsLoadingdataSubjectTypeData(false);
+  };
+
+  const fetchDataMappingHandler = async () => {
+    setIsLoadingDataMapping(true);
+    const endpoint = qs.stringifyUrl(
+      {
+        url: '/api/data/v1/data-mapping',
+        query: dataMappingFilter,
+      },
+      { arrayFormat: 'bracket' }
+    );
+
+    const response = await axios.get(endpoint);
+    const resData = response.data;
+    const { count, data, page, pageSize } = resData;
+    setDataMappingData({
+      count,
+      data,
+      page,
+      pageSize,
+    });
+    setIsLoadingDataMapping(false);
   };
 
   // filter handler
@@ -111,6 +155,13 @@ const DataMappingContent = () => {
     fetchData();
   }, []);
 
+  useEffect(() => {
+    const fetchData = async () => {
+      fetchDataMappingHandler();
+    };
+    fetchData();
+  }, [dataMappingFilter]);
+
   return (
     <>
       <div className={style.PageContainer}>
@@ -120,6 +171,7 @@ const DataMappingContent = () => {
             <Button
               icon={<FilterIcon width={16} height={16} />}
               onClick={openFilterDrawerHandler}
+              loading={isLoadingDepartmentData || isLoadingdataSubjectTypeData}
             >
               <span className={style.HideBtnLabel}>Filter</span>
             </Button>
@@ -153,7 +205,10 @@ const DataMappingContent = () => {
           <Button icon={<VisualizeIcon />}>Visualize</Button>
         </div>
         <div className={style.DataTableContainer}>
-          <DisplayDataTable />
+          <DisplayDataTable
+            dataMappingData={dataMappingData}
+            isLoading={isLoadingDataMapping}
+          />
         </div>
       </div>
       {/* Drawer Section */}
@@ -175,6 +230,7 @@ const DataMappingContent = () => {
               onClick={() => {
                 newDataForm.submit();
               }}
+              loading={isSendingNewDataMapping}
             >
               Save
             </Button>
@@ -185,6 +241,11 @@ const DataMappingContent = () => {
           form={newDataForm}
           departmentDataList={departmentDataList}
           dataSubjectTypeDataList={dataSubjectTypeDataList}
+          setLoading={setIsSendingNewDataMapping}
+          onSuccess={() => {
+            closeNewDataDrawerHandler();
+            fetchDataMappingHandler();
+          }}
         />
       </ResponsiveDrawer>
       <ResponsiveDrawer
