@@ -17,10 +17,12 @@ const LoginForm = () => {
   const router = useRouter();
   const [form] = Form.useForm<FieldType>();
   const [errorMessage, setErrorMessage] = useState<string>('');
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const onFinishHandler = async (values: FieldType) => {
     setErrorMessage('');
     try {
+      setIsLoading(true);
       await axios.post('/api/auth/v1/login', values);
       router.push('/data-mapping');
     } catch (err) {
@@ -31,6 +33,8 @@ const LoginForm = () => {
           setErrorMessage(errorMsg);
         }
       }
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -78,7 +82,7 @@ const LoginForm = () => {
         />
       )}
       <Form.Item label={null} style={{ marginBottom: 0 }}>
-        <Button block type="primary" htmlType="submit">
+        <Button block type="primary" htmlType="submit" loading={isLoading}>
           Login
         </Button>
       </Form.Item>
