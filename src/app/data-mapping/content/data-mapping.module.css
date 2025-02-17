@@ -63,3 +63,14 @@
     display: none;
   }
 }
+
+.NewDataDrawerTitle {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  .TextTitle {
+    font-weight: 600;
+    font-size: 16px;
+    line-height: 24px;
+  }
+}

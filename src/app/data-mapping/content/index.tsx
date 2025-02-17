@@ -1,6 +1,6 @@
 'use client';
-import React from 'react';
-import { Button, Menu, MenuProps } from 'antd';
+import React, { useState } from 'react';
+import { Button, Form, Menu, MenuProps } from 'antd';
 import FilterIcon from '../../../../public/static/filter-icon.svg';
 import ExportIcon from '../../../../public/static/export-icon.svg';
 import ImportIcon from '../../../../public/static/import-icon.svg';
@@ -10,7 +10,9 @@ import CollectionSrcIcon from '../../../../public/static/sub-menu-icon/collectio
 import EditIcon from '../../../../public/static/edit-icon.svg';
 import VisualizeIcon from '../../../../public/static/visusalize-icon.svg';
 import DisplayDataTable from './display-data-table';
+import ResponsiveDrawer from '@/components/responsive-drawer';
 import style from './data-mapping.module.css';
+import NewDataForm from './new-data-form';
 
 
 const items: MenuProps['items'] = [
@@ -30,6 +32,10 @@ const items: MenuProps['items'] = [
 ];
 
 const DataMappingContent = () => {
+  const [newDataForm] = Form.useForm();
+  const [openNewDataDrawer, setOpenNewDataDrawer] = useState<boolean>(false);
+  const openNewDataDrawerHandler = () => setOpenNewDataDrawer(true);
+  const closeNewDataDrawerHandler = () => setOpenNewDataDrawer(false);
   return (
     <>
       <div className={style.PageContainer}>
@@ -49,6 +55,7 @@ const DataMappingContent = () => {
               type="primary"
               block
               icon={<NewDataIcon width={16} height={16} />}
+              onClick={openNewDataDrawerHandler}
             >
               New Data
             </Button>
@@ -62,13 +69,41 @@ const DataMappingContent = () => {
           style={{ lineHeight: '40px' }}
         />
         <div className={style.RowActionButtons}>
-          <Button icon={<EditIcon />}>Edit</Button>
+          <Button color="primary" variant="outlined" icon={<EditIcon />}>
+            Edit
+          </Button>
           <Button icon={<VisualizeIcon />}>Visualize</Button>
         </div>
         <div className={style.DataTableContainer}>
           <DisplayDataTable />
         </div>
       </div>
+      <ResponsiveDrawer
+        open={openNewDataDrawer}
+        onClose={closeNewDataDrawerHandler}
+        title={
+          <div className={style.NewDataDrawerTitle}>
+            <span className={style.TextTitle}>New Data</span>
+            <Button
+              type="text"
+              style={{ marginLeft: 'auto' }}
+              onClick={closeNewDataDrawerHandler}
+            >
+              Cancel
+            </Button>
+            <Button
+              type="primary"
+              onClick={() => {
+                newDataForm.submit();
+              }}
+            >
+              Save
+            </Button>
+          </div>
+        }
+      >
+        <NewDataForm form={newDataForm} />
+      </ResponsiveDrawer>
     </>
   );
 };
