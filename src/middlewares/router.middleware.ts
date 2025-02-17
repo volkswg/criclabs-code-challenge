@@ -4,33 +4,34 @@ import { getCookies } from '@/services/cookies.service';
 import { verifyAccessToken } from '@/services/auth-token.service';
 import { AppError } from '@/exceptions/app-error';
 import { InternalServerError } from '@/exceptions/internal-error';
+import { UnauthorizedError } from '@/exceptions/unauthorized-error';
 
 export const withMiddleware = (
   handler: (params: ProcessedParams) => unknown,
-  needAuth: boolean = false
+  needAuth: boolean = true
 ) => {
   return async (
     req: NextRequest,
     params: { params: Promise<Record<string, string>> }
   ) => {
-    // auth section
-    if (needAuth) {
-      const accessTokenObj = getCookies(req.cookies, 'accessToken');
-      if (!accessTokenObj) {
-        return Response.redirect(new URL('/login', req.url));
-      }
-      const { value: accessToken } = accessTokenObj;
-      try {
-        await verifyAccessToken(accessToken);
-      } catch (err) {
-        console.log(err);
-        return Response.redirect(new URL('/login', req.url));
-      }
-    }
-
-    const requestMiddleware = new RequestMiddleware(req, params);
-    const processedParams = await requestMiddleware.getRequestParams();
     try {
+      // auth section
+      if (needAuth) {
+        const accessTokenObj = getCookies(req.cookies, 'accessToken');
+        if (!accessTokenObj) {
+          throw new UnauthorizedError('Unauthorized');
+        }
+        const { value: accessToken } = accessTokenObj;
+        try {
+          await verifyAccessToken(accessToken);
+        } catch (err) {
+          console.log(err);
+          throw new UnauthorizedError('Unauthorized');
+        }
+      }
+
+      const requestMiddleware = new RequestMiddleware(req, params);
+      const processedParams = await requestMiddleware.getRequestParams();
       return await handler(processedParams);
     } catch (error) {
       console.log(error);
