@@ -1,28 +1,17 @@
-import React, { ReactNode } from "react";
-import style from "./custom-layout.module.css";
+'use client';
+import React, { ReactNode } from 'react';
+
+import LoginLayout from './login-layout';
+import PageLayout from './page-layout';
 
 interface LayoutProps {
+  layoutType?: 'login' | 'other';
   children: ReactNode;
-  footerAlignment?: "center" | "left" | "right";
 }
 
-const CustomLayout = ({
-  children,
-  footerAlignment = "center",
-}: LayoutProps) => {
-  const alignmentStyle =
-    footerAlignment === "center"
-      ? style.Center
-      : footerAlignment === "right"
-      ? style.Right
-      : style.Left;
-
-  return (
-    <div className={style.LayoutContainer}>
-      {children}
-      <div className={[style.Footer, alignmentStyle].join(" ")}>© Criclabs</div>
-    </div>
-  );
+const CustomLayout = ({ layoutType = 'other', children }: LayoutProps) => {
+  const SelectedLayout = layoutType === 'login' ? LoginLayout : PageLayout;
+  return <SelectedLayout>{children}</SelectedLayout>;
 };
 
 export default CustomLayout;

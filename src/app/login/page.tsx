@@ -11,7 +11,7 @@ export const metadata: Metadata = {
 
 const LoginPage = () => {
   return (
-    <CustomLayout footerAlignment="center">
+    <CustomLayout layoutType="login">
       <div className={style.PageContainer}>
         <div className={style.LoginPanel}>
           <div className={style.Logo}>

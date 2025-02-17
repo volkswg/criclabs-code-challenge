@@ -22,7 +22,7 @@ const LoginForm = () => {
     setErrorMessage('');
     try {
       await axios.post('/api/auth/v1/login', values);
-      router.push('/');
+      router.push('/data-mapping');
     } catch (err) {
       if (err instanceof AxiosError) {
         if (err.response) {
