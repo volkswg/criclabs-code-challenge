@@ -3,6 +3,8 @@
   --viewportPaddingH: 24px;
   --xsViewportPaddingH: 16px;
   --navBarHeight: 64px;
+  --contentPageRowGap: 24px;
+  --contentPageRowGapXS: 16px;
 }
 
 html,

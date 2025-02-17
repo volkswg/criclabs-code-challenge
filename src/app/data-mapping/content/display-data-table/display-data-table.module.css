@@ -1,0 +1,30 @@
+.DataTable :global(.ant-table-thead .ant-table-cell) {
+  padding: 0 24px 12px 0;
+  white-space: nowrap;
+}
+
+.DataTable :global(.ant-table-tbody .ant-table-cell) {
+  padding: 12px 24px 30px 0;
+}
+
+.DataTable :global(.ant-spin-nested-loading) {
+  height: 100%;
+}
+.DataTable :global(.ant-spin-container) {
+  height: 100%;
+}
+.DataTable :global(.ant-table) {
+  height: 100%;
+}
+.DataTable :global(.ant-table-container) {
+  height: 100%;
+}
+.DataTable :global(.ant-table-content) {
+  height: 100%;
+}
+
+@media screen and (max-width: 576px) {
+  .DataTable :global(.ant-table-tbody .ant-table-cell) {
+    padding: 8px 24px 26px 0;
+  }
+}

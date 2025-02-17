@@ -29,6 +29,14 @@ export default function RootLayout({
         <ConfigProvider
           theme={{
             components: {
+              Table: {
+                padding: 0,
+                headerBg: 'none',
+                headerSplitColor: 'none',
+                headerColor: '#00000073',
+                headerSortHoverBg: 'none',
+                headerSortActiveBg: 'none',
+              },
               Button: {
                 fontWeight: 500,
                 lineHeight: 22,
