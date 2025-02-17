@@ -50,4 +50,4 @@ const loginHandler = async (params: ProcessedParams) => {
   );
 };
 
-export const POST = withMiddleware(loginHandler);
+export const POST = withMiddleware(loginHandler, false);

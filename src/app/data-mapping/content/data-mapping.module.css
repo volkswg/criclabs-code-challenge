@@ -1,0 +1,77 @@
+.PageContainer {
+  display: flex;
+  flex-direction: column;
+  row-gap: var(--contentPageRowGap);
+  height: 100%;
+}
+
+.TitleSection {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  row-gap: 12px;
+}
+
+.PageTitle {
+  font-size: 24px;
+  font-weight: 600;
+  line-height: 32px;
+}
+
+.TitleButtons {
+  display: flex;
+  gap: 12px;
+}
+
+.DataTableContainer {
+  flex-grow: 1;
+  background-color: #ffffff;
+  border: 1px solid #d9d9d9;
+  border-radius: 6px;
+  padding: var(--contentPageRowGap);
+  /* overflow: auto; */
+  overflow: hidden;
+}
+
+/* .TabMenuContainer {} */
+
+.TabMenuContainer :global(.ant-menu-item) {
+  padding: 0;
+  margin-right: 24px;
+}
+/* .HideBtnLabel {
+  display: none;
+} */
+.RowActionButtons {
+  display: flex;
+  gap: 12px;
+}
+@media screen and (max-width: 576px) {
+  .PageContainer {
+    row-gap: var(--contentPageRowGapXS);
+  }
+  .PageTitle {
+    width: 100%;
+  }
+  .TitleButtons {
+    width: 100%;
+  }
+  .DataTableContainer {
+    padding: var(--contentPageRowGapXS);
+  }
+  .HideBtnLabel {
+    display: none;
+  }
+}
+
+.NewDataDrawerTitle,
+.FilterDrawerTitle {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  .TextTitle {
+    font-weight: 600;
+    font-size: 16px;
+    line-height: 24px;
+  }
+}

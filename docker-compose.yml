@@ -15,7 +15,7 @@ services:
     depends_on:
       - criclabs-db
     command: >
-      sh -c "yarn install && yarn dev"
+      sh -c "yarn install && npx prisma generate && yarn dev"
 
   criclabs-db:
     image: postgres:15

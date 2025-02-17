@@ -1,7 +1,10 @@
 :root {
   --criclabsBgColor: #0000000a;
-  --viewportPadding: 0 24px;
-  --xsViewportPadding: 0 16px;
+  --viewportPaddingH: 24px;
+  --xsViewportPaddingH: 16px;
+  --navBarHeight: 64px;
+  --contentPageRowGap: 24px;
+  --contentPageRowGapXS: 16px;
 }
 
 html,

@@ -16,3 +16,50 @@ model users {
   updatedAt DateTime  @default(now()) @updatedAt @map("updated_at")
   deletedAt DateTime? @map("deleted_at")
 }
+
+model department {
+  id    Int    @id @default(autoincrement())
+  value String
+
+  createdAt   DateTime      @default(now()) @map("created_at")
+  updatedAt   DateTime      @default(now()) @updatedAt @map("updated_at")
+  deletedAt   DateTime?     @map("deleted_at")
+  dataMapping dataMapping[]
+}
+
+model dataSubjectType {
+  id    Int    @id @default(autoincrement())
+  value String
+
+  createdAt                  DateTime                     @default(now()) @map("created_at")
+  updatedAt                  DateTime                     @default(now()) @updatedAt @map("updated_at")
+  deletedAt                  DateTime?                    @map("deleted_at")
+  dataMappingDataSubjectType dataMappingDataSubjectType[]
+
+  @@map("data_subject_type")
+}
+
+model dataMapping {
+  id           Int        @id @default(autoincrement())
+  title        String
+  description  String?
+  department   department @relation(fields: [departmentId], references: [id])
+  departmentId Int        @map("department_id")
+
+  createdAt                  DateTime                     @default(now()) @map("created_at")
+  updatedAt                  DateTime                     @default(now()) @updatedAt @map("updated_at")
+  deletedAt                  DateTime?                    @map("deleted_at")
+  dataMappingDataSubjectType dataMappingDataSubjectType[]
+
+  @@map("data_mapping")
+}
+
+model dataMappingDataSubjectType {
+  dataMapping       dataMapping     @relation(fields: [dataMappingId], references: [id])
+  dataMappingId     Int             @map("data_mapping_id")
+  dataSubjectType   dataSubjectType @relation(fields: [dataSubjectTypeId], references: [id])
+  dataSubjectTypeId Int             @map("data_subject_type_id")
+
+  @@id([dataMappingId, dataSubjectTypeId])
+  @@map("data_mapping_data_subject_type")
+}

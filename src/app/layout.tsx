@@ -29,10 +29,37 @@ export default function RootLayout({
         <ConfigProvider
           theme={{
             components: {
+              Table: {
+                padding: 0,
+                headerBg: 'none',
+                headerSplitColor: 'none',
+                headerColor: '#00000073',
+                headerSortHoverBg: 'none',
+                headerSortActiveBg: 'none',
+              },
               Button: {
                 fontWeight: 500,
                 lineHeight: 22,
                 fontSize: 14,
+              },
+              Layout: {
+                headerHeight: 56,
+                bodyBg: 'transparent',
+              },
+              Menu: {
+                itemBg: 'transparent',
+                itemActiveBg: 'transparent',
+                itemHoverBg: 'transparent',
+                itemSelectedBg: 'transparent',
+                itemMarginInline: 0,
+                itemMarginBlock: 0,
+                itemPaddingInline: 24,
+                itemHeight: 40,
+                iconMarginInlineEnd: 8,
+              },
+              Breadcrumb: {
+                separatorColor: '#0000001F',
+                itemColor: '#00000040',
               },
             },
             token: {
@@ -40,6 +67,7 @@ export default function RootLayout({
               controlOutline: 'none',
               colorErrorBg: '#F5222D14',
               colorErrorBorder: '#F5222D29',
+              controlHeight: 40,
             },
           }}
         >
