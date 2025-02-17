@@ -1,0 +1,66 @@
+.PageLayoutContainer {
+  height: 100vh;
+}
+
+.PageContentContainer {
+  padding: var(--viewportPaddingH) var(--viewportPaddingH) 0
+    var(--viewportPaddingH);
+}
+
+.DesktopSubMenu {
+  margin-top: 24px;
+  background-color: transparent;
+}
+
+.DesktopSubMenuItems {
+  /* background-color: transparent; */
+  height: 100%;
+  border-inline-end: none !important;
+}
+
+.MobileSubMenu {
+  background-color: transparent;
+  border-bottom: 1px solid #0000000f;
+  height: 56px;
+  padding: 0 var(--viewportPaddingH);
+  overflow-x: auto;
+  scrollbar-width: 0;
+}
+.MobileSubMenu::-webkit-scrollbar {
+  display: none;
+}
+
+/* .MobileSubMenuItems {} */
+
+.MobileSubMenuItems :global(.ant-menu-item) {
+  padding: 0;
+  margin-right: 24px;
+}
+
+.MobileSubMenuItems :global(.ant-menu-item::after) {
+  border-bottom: none !important;
+}
+
+/* screen width <= 768 */
+@media screen and (max-width: 768px) {
+  .DesktopSubMenu {
+    display: none;
+  }
+}
+
+/* screen width >= 769 */
+@media screen and (min-width: 769px) {
+  .MobileSubMenu {
+    height: 0;
+    overflow: hidden;
+  }
+}
+
+@media screen and (max-width: 576px) {
+  .PageContentContainer {
+    padding: var(--xsViewportPaddingH);
+  }
+  .MobileSubMenu {
+    padding: 0 var(--xsViewportPaddingH);
+  }
+}
