@@ -16,3 +16,26 @@ model users {
   updatedAt DateTime  @default(now()) @updatedAt @map("updated_at")
   deletedAt DateTime? @map("deleted_at")
 }
+
+model department {
+  id    Int    @id @default(autoincrement())
+  value String
+
+  createdAt   DateTime      @default(now()) @map("created_at")
+  updatedAt   DateTime      @default(now()) @updatedAt @map("updated_at")
+  deletedAt   DateTime?     @map("deleted_at")
+  dataMapping dataMapping[]
+}
+
+model dataSubjectType {
+  id    Int    @id @default(autoincrement())
+  value String
+
+  createdAt                  DateTime                     @default(now()) @map("created_at")
+  updatedAt                  DateTime                     @default(now()) @updatedAt @map("updated_at")
+  deletedAt                  DateTime?                    @map("deleted_at")
+  dataMappingDataSubjectType dataMappingDataSubjectType[]
+
+  @@map("data_subject_type")
+}
+
